@@ -1,9 +1,8 @@
-using FluentAssertions;
+ï»¿using FluentAssertions;
 using RichardSzalay.MockHttp;
 
-namespace RTU_TC.RTUScheduleClient.ICal.Tests;
-
-public class HttpSearchICalContentRTUScheduleTests
+namespace RTU_TC.RTUScheduleClient.ICal.Tests.HttpSearchICalContentRTUScheduleTests;
+public class CorrectParseResponseTests
 {
     [Fact]
     public async Task NoSchedulesIsEmptyCollection()
@@ -32,7 +31,7 @@ public class HttpSearchICalContentRTUScheduleTests
                 .Respond("application/json", """
                 { "data" : [ {
                     "id": 1,
-                    "targetTitle": "2 (Ñ-20)",
+                    "targetTitle": "2 (Ð¡-20)",
                     "scheduleTarget": 3,
                     "iCalLink": "ignore-it",
                     "scheduleImageLink": "ignore-it",
@@ -50,8 +49,8 @@ public class HttpSearchICalContentRTUScheduleTests
         schedules.Should().HaveCount(1);
         var schedule = schedules[0];
         schedule.Id.Should().Be(1);
-        schedule.TargetTitle.Should().Be("2 (Ñ-20)");
+        schedule.TargetTitle.Should().Be("2 (Ð¡-20)");
         schedule.ScheduleTarget.Should().Be(ScheduleTarget.Auditorium);
-
     }
+
 }

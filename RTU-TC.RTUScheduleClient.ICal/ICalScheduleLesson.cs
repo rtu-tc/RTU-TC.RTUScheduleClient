@@ -1,31 +1,34 @@
 ﻿using Ical.Net.CalendarComponents;
+using Ical.Net.DataTypes;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace RTU_TC.RTUScheduleClient;
 
-public partial record ICalScheduleLesson(Ical.Net.DataTypes.Period Period, CalendarEvent CalendarEvent) : IScheduleLesson
+public partial class ICalScheduleLesson : IScheduleLesson
 {
-    private static readonly Regex audNameRegex = GetAuditoriumValuesRegex();
-    private static readonly Regex subgroupRegex = GetSubGroupRegex();
+    private static readonly Regex _audNameRegex = GetAuditoriumValuesRegex();
+    private static readonly Regex _subgroupRegex = GetSubGroupRegex();
 
-    public DateTimeOffset Start { get; } = Period.StartTime.AsDateTimeOffset;
-    public DateTimeOffset End { get; } = Period.EndTime.AsDateTimeOffset;
+    public ICalScheduleLesson(Period period, CalendarEvent calendarEvent)
+    {
+        Start = period.StartTime.AsDateTimeOffset;
+        End = period.EndTime.AsDateTimeOffset;
+        Discipline = calendarEvent.Properties.Get<string>("X-META-DISCIPLINE");
+        LessonType = calendarEvent.Properties.Get<string>("X-META-LESSON_TYPE");
 
-    public string Discipline { get; } = CalendarEvent.Properties.Get<string>("X-META-DISCIPLINE");
-    public string LessonType { get; } = CalendarEvent.Properties.Get<string>("X-META-LESSON_TYPE");
-    
-    public IReadOnlyCollection<ScheduleGroup> Groups { get; } = CalendarEvent.Properties.AllOf("X-META-GROUP")
+        Groups = calendarEvent.Properties.AllOf("X-META-GROUP")
         .Select(p =>
         {
             var groupId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
             return new ScheduleGroup(groupId, p.Value.ToString()!);
         })
         .ToArray();
-    public IReadOnlyCollection<ScheduleAuditorium> Auditoriums { get; } = CalendarEvent.Properties.AllOf("X-META-AUDITORIUM")
+
+        Auditoriums = calendarEvent.Properties.AllOf("X-META-AUDITORIUM")
         .Select(p =>
         {
-            var audMatch = audNameRegex.Match(p.Value.ToString()!);
+            var audMatch = _audNameRegex.Match(p.Value.ToString()!);
             var audId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
             return new ScheduleAuditorium(
                 audId,
@@ -34,16 +37,28 @@ public partial record ICalScheduleLesson(Ical.Net.DataTypes.Period Period, Calen
             );
         })
         .ToArray();
-    public IReadOnlyCollection<ScheduleTeacher> Teachers { get; } = CalendarEvent.Properties.AllOf("X-META-TEACHER")
+
+        Teachers = calendarEvent.Properties.AllOf("X-META-TEACHER")
         .Select(p =>
         {
             var teacherId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
             return new ScheduleTeacher(teacherId, p.Value.ToString()!);
         })
         .ToArray();
+    }
+
+    public DateTimeOffset Start { get; }
+    public DateTimeOffset End { get; }
+
+    public string Discipline { get; }
+    public string LessonType { get; }
+    
+    public IReadOnlyCollection<ScheduleGroup> Groups { get; }
+    public IReadOnlyCollection<ScheduleAuditorium> Auditoriums { get; }
+    public IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
 
     [GeneratedRegex(@"\d\s*п\W*г")]
     private static partial Regex GetSubGroupRegex();
-    [GeneratedRegex(@"^(?<title>.+) *\((?<campus>.+)\)$", RegexOptions.Compiled)]
+    [GeneratedRegex(@"^(?<title>.+)\s+\((?<campus>.+)\)$")]
     private static partial Regex GetAuditoriumValuesRegex();
 }
