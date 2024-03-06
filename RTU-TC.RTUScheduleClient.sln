@@ -3,14 +3,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RTU-TC.RTUScheduleClient", "lib\RTU-TC.RTUScheduleClient\RTU-TC.RTUScheduleClient.csproj", "{BE034A84-A575-4C87-B17B-455A8FDA3BCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RTU-TC.RTUScheduleClient.Core", "lib\RTU-TC.RTUScheduleClient.Core\RTU-TC.RTUScheduleClient.Core.csproj", "{BE034A84-A575-4C87-B17B-455A8FDA3BCC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0C655590-1718-4C72-9892-5405C6448467}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{5BFB6B10-062B-4A32-B733-D84D91846B78}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RTU-TC.RTUScheduleClient.ICal", "RTU-TC.RTUScheduleClient.ICal\RTU-TC.RTUScheduleClient.ICal.csproj", "{8726D849-7DF8-4C6D-9BDA-D77B0DD9932B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C77C17E8-9E45-4B96-AF43-52620BBBC3F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RTU-TC.RTUScheduleClient.ICal.Tests", "RTU-TC.RTUScheduleClient.ICal.Tests\RTU-TC.RTUScheduleClient.ICal.Tests.csproj", "{3A417F2B-FB01-4FC7-9714-7FFF4F10899E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sandbox", "Sandbox\Sandbox.csproj", "{E932036A-3E07-4E14-A94F-D78A044FDBCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,12 +31,27 @@ Global
 		{BE034A84-A575-4C87-B17B-455A8FDA3BCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE034A84-A575-4C87-B17B-455A8FDA3BCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE034A84-A575-4C87-B17B-455A8FDA3BCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8726D849-7DF8-4C6D-9BDA-D77B0DD9932B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8726D849-7DF8-4C6D-9BDA-D77B0DD9932B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8726D849-7DF8-4C6D-9BDA-D77B0DD9932B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8726D849-7DF8-4C6D-9BDA-D77B0DD9932B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A417F2B-FB01-4FC7-9714-7FFF4F10899E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A417F2B-FB01-4FC7-9714-7FFF4F10899E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A417F2B-FB01-4FC7-9714-7FFF4F10899E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A417F2B-FB01-4FC7-9714-7FFF4F10899E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E932036A-3E07-4E14-A94F-D78A044FDBCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E932036A-3E07-4E14-A94F-D78A044FDBCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E932036A-3E07-4E14-A94F-D78A044FDBCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E932036A-3E07-4E14-A94F-D78A044FDBCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{BE034A84-A575-4C87-B17B-455A8FDA3BCC} = {5BFB6B10-062B-4A32-B733-D84D91846B78}
+		{8726D849-7DF8-4C6D-9BDA-D77B0DD9932B} = {5BFB6B10-062B-4A32-B733-D84D91846B78}
+		{3A417F2B-FB01-4FC7-9714-7FFF4F10899E} = {C77C17E8-9E45-4B96-AF43-52620BBBC3F8}
+		{E932036A-3E07-4E14-A94F-D78A044FDBCD} = {C77C17E8-9E45-4B96-AF43-52620BBBC3F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B7E37F4-C6D6-4AFC-9D75-FA920009D290}
