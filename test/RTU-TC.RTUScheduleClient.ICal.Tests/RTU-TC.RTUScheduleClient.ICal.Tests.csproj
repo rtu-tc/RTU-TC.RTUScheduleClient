@@ -37,8 +37,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RTU-TC.RTUScheduleClient.ICal\RTU-TC.RTUScheduleClient.ICal.csproj" />
+    <ProjectReference Include="..\..\lib\RTU-TC.RTUScheduleClient.ICal\RTU-TC.RTUScheduleClient.ICal.csproj" />
   </ItemGroup>
+
 
   <ItemGroup>
     <Using Include="Xunit" />
