@@ -5,7 +5,29 @@
     <RootNamespace>RTU_TC.RTUScheduleClient.ICal</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>0.0.1</Version>
+    <Authors>RTU-TC</Authors>
+    <Company>RTU-TC</Company>
+    <Description>Клиент для расписания РТУ МИРЭА на основании ical интерфейса</Description>
+    <PackageProjectUrl>https://github.com/rtu-tc/RTU-TC.RTUScheduleClient</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/rtu-tc/RTU-TC.RTUScheduleClient</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Ical.Net" Version="4.2.0" />
