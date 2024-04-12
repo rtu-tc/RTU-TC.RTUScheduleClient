@@ -1,3 +1,7 @@
-# .NET  ÎËÂÌÚ ‰Îˇ ‡ÒÔËÒ‡ÌËˇ –“” Ã»–›¿
+# .NET –ö–ª–∏–µ–Ω—Ç –¥–ª—è —Ä–∞—Å–ø–∏—Å–∞–Ω–∏—è –†–¢–£ –ú–ò–†–≠–ê
 
-> API ‡ÒÔËÒ‡ÌËˇ Í‡Í Ë ÍÎËÂÌÚ Ì‡ıÓ‰ˇÚÒˇ ‚ ‡Á‡·ÓÚÍÂ, ‡·ÓÚÓÒÔÓÒÓ·ÌÓÒÚ¸ Ë ÒÚ‡·ËÎ¸ÌÓÒÚ¸ ÙÓÏ‡ÚÓ‚ ‰‡ÌÌ˚ı ÌÂ „‡‡ÌÚËÛÂÚÒˇ.
+[![NuGet Version](https://img.shields.io/nuget/v/RTU-TC.RTUScheduleClient.ICal)](https://www.nuget.org/packages/RTU-TC.RTUScheduleClient.ICal)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/RTU-TC.RTUScheduleClient.ICal)](https://www.nuget.org/packages/RTU-TC.RTUScheduleClient.ICal)
+
+
+> API —Ä–∞—Å–ø–∏—Å–∞–Ω–∏—è –∫–∞–∫ –∏ –∫–ª–∏–µ–Ω—Ç –Ω–∞—Ö–æ–¥—è—Ç—Å—è –≤ —Ä–∞–∑—Ä–∞–±–æ—Ç–∫–µ, —Ä–∞–±–æ—Ç–æ—Å–ø–æ—Å–æ–±–Ω–æ—Å—Ç—å –∏ —Å—Ç–∞–±–∏–ª—å–Ω–æ—Å—Ç—å —Ñ–æ—Ä–º–∞—Ç–æ–≤ –¥–∞–Ω–Ω—ã—Ö –Ω–µ –≥–∞—Ä–∞–Ω—Ç—Ä–∏—É–µ—Ç—Å—è.
