@@ -16,6 +16,7 @@ public partial class ICalScheduleLesson : IScheduleLesson
         End = period.EndTime.AsDateTimeOffset;
         Discipline = calendarEvent.Properties.Get<string>("X-META-DISCIPLINE");
         LessonType = calendarEvent.Properties.Get<string>("X-META-LESSON_TYPE");
+        ScheduleVersionId = int.Parse(calendarEvent.Properties.Get<string>("X-SCHEDULE_VERSION-ID"));
 
         Groups = calendarEvent.Properties.AllOf("X-META-GROUP")
         .Select(p =>
@@ -52,7 +53,8 @@ public partial class ICalScheduleLesson : IScheduleLesson
 
     public string Discipline { get; }
     public string LessonType { get; }
-    
+    public int ScheduleVersionId { get; }
+
     public IReadOnlyCollection<ScheduleGroup> Groups { get; }
     public IReadOnlyCollection<ScheduleAuditorium> Auditoriums { get; }
     public IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
