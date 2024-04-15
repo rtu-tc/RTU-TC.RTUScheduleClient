@@ -21,14 +21,14 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
         _httpClient = httpClient;
     }
 
-    public IAsyncEnumerable<ISchedule> GetAllGroupSchedulesAsync(CancellationToken cancellationToken = default) 
+    public IAsyncEnumerable<ISchedule> GetAllGroupSchedulesAsync(CancellationToken cancellationToken = default)
         => GetAllSchedulesAsync(cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Group);
-    public IAsyncEnumerable<ISchedule> GetAllAuditoriumSchedulesAsync(CancellationToken cancellationToken = default) 
+    public IAsyncEnumerable<ISchedule> GetAllAuditoriumSchedulesAsync(CancellationToken cancellationToken = default)
         => GetAllSchedulesAsync(cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Auditorium);
-    public IAsyncEnumerable<ISchedule> GetAllTeacherSchedulesAsync(CancellationToken cancellationToken = default) 
+    public IAsyncEnumerable<ISchedule> GetAllTeacherSchedulesAsync(CancellationToken cancellationToken = default)
         => GetAllSchedulesAsync(cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Teacher);
 
-    public async IAsyncEnumerable<ISchedule> GetAllSchedulesAsync([EnumeratorCancellation]CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<ISchedule> GetAllSchedulesAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         string? pageToken = null;
         do
@@ -85,5 +85,5 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
 public class NoClientNameProvidedException : Exception
 {
     public NoClientNameProvidedException() : base($"You must setup default request header {HttpSearchICalContentRTUSchedule.ClientNameHeaderKey} in you own http client")
-    {}
+    { }
 }

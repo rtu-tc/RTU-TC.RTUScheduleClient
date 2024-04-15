@@ -22,6 +22,10 @@ public interface IScheduleLesson
     /// </summary>
     string LessonType { get; }
     /// <summary>
+    /// SvId версии расписания, к которой относится пара
+    /// </summary>
+    int ScheduleVersionId { get; }
+    /// <summary>
     /// Аудитории
     /// </summary>
     IReadOnlyCollection<ScheduleAuditorium> Auditoriums { get; }

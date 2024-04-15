@@ -13,3 +13,13 @@ await foreach (var item in scheduleClient.GetAllTeacherSchedulesAsync())
     break;
 }
 
+await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync())
+{
+    var cal = await item.GetCalendarAsync();
+    var check = cal.GetAllLessons();
+    foreach (var l in check)
+    {
+        Console.WriteLine(l.Discipline);
+    }
+}
+
