@@ -2,14 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>RTU_TC.RTUScheduleClient</RootNamespace>
+    <RootNamespace>RTU_TC.RTUScheduleClient.ICal</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>0.0.2</Version>
     <Authors>RTU-TC</Authors>
     <Company>RTU-TC</Company>
-    <Description>Базовые интерфейсы клиента для расписания РТУ МИРЭА</Description>
+    <Description>ICal клиент для расписания РТУ МИРЭА</Description>
     <PackageProjectUrl>https://github.com/rtu-tc/RTU-TC.RTUScheduleClient</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/rtu-tc/RTU-TC.RTUScheduleClient</RepositoryUrl>
@@ -28,4 +28,13 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ical.Net" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RTU-TC.RTUScheduleClient.Core\RTU-TC.RTUScheduleClient.Core.csproj" />
+  </ItemGroup>
+
 </Project>
