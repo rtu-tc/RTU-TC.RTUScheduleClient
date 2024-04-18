@@ -46,6 +46,14 @@ public partial class ICalScheduleLesson : IScheduleLesson
             return new ScheduleTeacher(teacherId, p.Value.ToString()!);
         })
         .ToArray();
+
+        SubGroups = calendarEvent.Properties.AllOf("SUMMARY")
+            .Select(p =>
+            {
+                var subMatch = _subgroupRegex.Match(p.Value.ToString()!);
+                return subMatch.Value;
+            })
+            .ToArray();
     }
 
     public DateTimeOffset Start { get; }
@@ -58,6 +66,7 @@ public partial class ICalScheduleLesson : IScheduleLesson
     public IReadOnlyCollection<ScheduleGroup> Groups { get; }
     public IReadOnlyCollection<ScheduleAuditorium> Auditoriums { get; }
     public IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
+    public IReadOnlyCollection<string> SubGroups { get; }
 
     [GeneratedRegex(@"\d\s*п\W*г")]
     private static partial Regex GetSubGroupRegex();
