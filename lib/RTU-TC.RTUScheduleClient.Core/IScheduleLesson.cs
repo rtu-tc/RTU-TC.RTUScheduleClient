@@ -37,4 +37,8 @@ public interface IScheduleLesson
     /// Преподаватели, ведущие занятие
     /// </summary>
     IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
+    /// <summary>
+    /// Подгруппа(ы) занятия 
+    /// </summary>
+    IReadOnlyCollection<int> SubGroups { get; }
 }

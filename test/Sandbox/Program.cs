@@ -19,7 +19,12 @@ await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync())
     var check = cal.GetAllLessons();
     foreach (var l in check)
     {
-        Console.WriteLine(l.Discipline);
+        //Console.WriteLine(l.Discipline);
+        //Подгруппы
+        foreach (var r in l.SubGroups)
+        {
+            Console.WriteLine(r);
+        }
     }
 }
 

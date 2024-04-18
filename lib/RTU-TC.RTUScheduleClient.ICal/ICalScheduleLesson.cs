@@ -8,7 +8,6 @@ namespace RTU_TC.RTUScheduleClient;
 public partial class ICalScheduleLesson : IScheduleLesson
 {
     private static readonly Regex _audNameRegex = GetAuditoriumValuesRegex();
-    private static readonly Regex _subgroupRegex = GetSubGroupRegex();
 
     public ICalScheduleLesson(Period period, CalendarEvent calendarEvent)
     {
@@ -46,6 +45,8 @@ public partial class ICalScheduleLesson : IScheduleLesson
             return new ScheduleTeacher(teacherId, p.Value.ToString()!);
         })
         .ToArray();
+
+        SubGroups = SubGroupsFromPpsExtractor.ExtractSubGroups(calendarEvent.Properties.Get<string>("SUMMARY"));
     }
 
     public DateTimeOffset Start { get; }
@@ -58,9 +59,35 @@ public partial class ICalScheduleLesson : IScheduleLesson
     public IReadOnlyCollection<ScheduleGroup> Groups { get; }
     public IReadOnlyCollection<ScheduleAuditorium> Auditoriums { get; }
     public IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
+    public IReadOnlyCollection<int> SubGroups { get; }
 
-    [GeneratedRegex(@"\d\s*п\W*г")]
-    private static partial Regex GetSubGroupRegex();
     [GeneratedRegex(@"^(?<title>.+)\s+\((?<campus>.+)\)$")]
     private static partial Regex GetAuditoriumValuesRegex();
+}
+
+public static partial class SubGroupsFromPpsExtractor
+{
+    private static readonly Regex _subGroupRegex = GetSubGroupsRegex();
+
+    public static int[] ExtractSubGroups(string? row)
+    {
+        if (string.IsNullOrEmpty(row))
+        {
+            return [];
+        }
+        var match = _subGroupRegex.Matches(row);
+        if (match.Count == 0)
+        {
+            return [];
+        }
+        return [.. match
+            .Select(m => int.Parse(m.Groups["subgroup"].Value, CultureInfo.InvariantCulture))
+            .Distinct()
+            .Order()];
+    }
+
+    public static string CleanSubGroups(string row) => _subGroupRegex.Replace(row, "");
+
+    [GeneratedRegex(@"(?<subgroup>\d+) *п?(\\|\/)*г,?")]
+    private static partial Regex GetSubGroupsRegex();
 }
