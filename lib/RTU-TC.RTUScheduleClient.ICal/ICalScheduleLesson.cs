@@ -8,7 +8,6 @@ namespace RTU_TC.RTUScheduleClient;
 public partial class ICalScheduleLesson : IScheduleLesson
 {
     private static readonly Regex _audNameRegex = GetAuditoriumValuesRegex();
-    private static readonly Regex _subgroupRegex = GetSubGroupRegex();
 
     public ICalScheduleLesson(Period period, CalendarEvent calendarEvent)
     {
@@ -62,8 +61,6 @@ public partial class ICalScheduleLesson : IScheduleLesson
     public IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
     public IReadOnlyCollection<int> SubGroups { get; }
 
-    [GeneratedRegex(@"(?<subgroup>\d+) *п?(\\|\/)*г,?")]
-    private static partial Regex GetSubGroupRegex();
     [GeneratedRegex(@"^(?<title>.+)\s+\((?<campus>.+)\)$")]
     private static partial Regex GetAuditoriumValuesRegex();
 }
