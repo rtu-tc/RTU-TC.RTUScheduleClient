@@ -4,6 +4,7 @@ using System.Net;
 using System.Text.Json.Serialization;
 using RTU_TC.RTUScheduleClient.ICal;
 using System.Runtime.CompilerServices;
+using System.Net.Http;
 
 namespace RTU_TC.RTUScheduleClient;
 
@@ -36,6 +37,25 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
             var url = $"/schedule/api/search?limit=50&pageToken={WebUtility.UrlEncode(pageToken)}";
             var currentList = await _httpClient.GetFromJsonAsync<PaginationResponse>(url, cancellationToken: cancellationToken)
                 ?? throw new UnreachableException("Can't retrieve schedule");
+            foreach (var item in currentList.Schedules)
+            {
+                yield return new Schedule(_httpClient, item);
+            }
+            pageToken = currentList.NextPageToken;
+        } while (pageToken is not null && !cancellationToken.IsCancellationRequested);
+    }
+
+    public async IAsyncEnumerable<ISchedule> GetMatchingGroupScheduleAsync(
+        string groupTitle,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
+    )
+    {
+        string? pageToken = null;
+        do
+        {
+            var url = $"/schedule/api/search?match={groupTitle}&limit=50&pageToken={WebUtility.UrlEncode(pageToken)}";
+            var currentList = await _httpClient.GetFromJsonAsync<PaginationResponse>(url, cancellationToken: cancellationToken)
+                ?? throw new UnreachableException("Can't retrieve matching group schedule");
             foreach (var item in currentList.Schedules)
             {
                 yield return new Schedule(_httpClient, item);

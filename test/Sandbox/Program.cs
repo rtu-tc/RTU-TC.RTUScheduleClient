@@ -13,18 +13,14 @@ await foreach (var item in scheduleClient.GetAllTeacherSchedulesAsync())
     break;
 }
 
-await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync())
+await foreach (var item in scheduleClient.GetMatchingGroupScheduleAsync("ИМБО-01-21"))
 {
-    var cal = await item.GetCalendarAsync();
-    var check = cal.GetAllLessons();
-    foreach (var l in check)
+    Console.WriteLine(item.ScheduleTarget);
+    Console.WriteLine(item.TargetTitle);
+    var target = await item.GetCalendarAsync();
+    foreach (var it2 in target.GetAllLessons())
     {
-        //Console.WriteLine(l.Discipline);
-        //Подгруппы
-        foreach (var r in l.SubGroups)
-        {
-            Console.WriteLine(r);
-        }
+        Console.WriteLine(it2.Discipline);
     }
 }
 
