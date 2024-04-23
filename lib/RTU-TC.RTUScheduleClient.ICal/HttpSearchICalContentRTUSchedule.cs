@@ -4,6 +4,8 @@ using System.Net;
 using System.Text.Json.Serialization;
 using RTU_TC.RTUScheduleClient.ICal;
 using System.Runtime.CompilerServices;
+using System.Net.Http;
+using System.Text.RegularExpressions;
 
 namespace RTU_TC.RTUScheduleClient;
 
@@ -21,19 +23,25 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
         _httpClient = httpClient;
     }
 
-    public IAsyncEnumerable<ISchedule> GetAllGroupSchedulesAsync(CancellationToken cancellationToken = default)
-        => GetAllSchedulesAsync(cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Group);
-    public IAsyncEnumerable<ISchedule> GetAllAuditoriumSchedulesAsync(CancellationToken cancellationToken = default)
-        => GetAllSchedulesAsync(cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Auditorium);
-    public IAsyncEnumerable<ISchedule> GetAllTeacherSchedulesAsync(CancellationToken cancellationToken = default)
-        => GetAllSchedulesAsync(cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Teacher);
+    public IAsyncEnumerable<ISchedule> GetAllGroupSchedulesAsync(string? match = default, CancellationToken cancellationToken = default)
+        => GetAllSchedulesAsync(match, cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Group);
+    public IAsyncEnumerable<ISchedule> GetAllAuditoriumSchedulesAsync(string? match = default, CancellationToken cancellationToken = default)
+        => GetAllSchedulesAsync(match, cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Auditorium);
+    public IAsyncEnumerable<ISchedule> GetAllTeacherSchedulesAsync(string? match = default, CancellationToken cancellationToken = default)
+        => GetAllSchedulesAsync(match, cancellationToken).WhereAsync(g => g.ScheduleTarget == ScheduleTarget.Teacher);
 
-    public async IAsyncEnumerable<ISchedule> GetAllSchedulesAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
+    public async IAsyncEnumerable<ISchedule> GetAllSchedulesAsync(
+        string? match = default,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         string? pageToken = null;
         do
         {
             var url = $"/schedule/api/search?limit=50&pageToken={WebUtility.UrlEncode(pageToken)}";
+            if (!string.IsNullOrEmpty(match))
+            {
+                url += $"&match={WebUtility.UrlEncode(match)}";
+            }
             var currentList = await _httpClient.GetFromJsonAsync<PaginationResponse>(url, cancellationToken: cancellationToken)
                 ?? throw new UnreachableException("Can't retrieve schedule");
             foreach (var item in currentList.Schedules)
@@ -43,7 +51,6 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
             pageToken = currentList.NextPageToken;
         } while (pageToken is not null && !cancellationToken.IsCancellationRequested);
     }
-
 
     private class PaginationResponse
     {

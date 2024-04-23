@@ -7,24 +7,19 @@ using var client = new HttpClient
 client.DefaultRequestHeaders.Add(HttpSearchICalContentRTUSchedule.ClientNameHeaderKey, "schedule-client-sandbox");
 var scheduleClient = new HttpSearchICalContentRTUSchedule(client);
 
-await foreach (var item in scheduleClient.GetAllTeacherSchedulesAsync())
+await foreach (var item in scheduleClient.GetAllAuditoriumSchedulesAsync("А-18"))
 {
     Console.WriteLine(item.TargetTitle);
     break;
 }
 
-await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync())
+await foreach (var item in scheduleClient.GetAllSchedulesAsync())
 {
+    Console.WriteLine(item.TargetTitle);
     var cal = await item.GetCalendarAsync();
-    var check = cal.GetAllLessons();
-    foreach (var l in check)
+    foreach (var schedule in cal.GetAllLessons())
     {
-        //Console.WriteLine(l.Discipline);
-        //Подгруппы
-        foreach (var r in l.SubGroups)
-        {
-            Console.WriteLine(r);
-        }
+        Console.WriteLine(schedule.Discipline);
     }
+    break;
 }
-
