@@ -28,8 +28,8 @@ public partial class ICalScheduleLesson : IScheduleLesson
         Auditoriums = calendarEvent.Properties.AllOf("X-META-AUDITORIUM")
         .Select(p =>
         {
-            var audMatch = _audNameRegex.Match(p.Value.ToString()!);
             var audId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
+            var audMatch = _audNameRegex.Match(p.Value.ToString()!);
             return new ScheduleAuditorium(
                 audId,
                 audMatch.Groups["title"].Value,
