@@ -4,8 +4,8 @@ public class AuditoriumParserTests
     [Fact]
     public void AuditoriumWithCampusParsed()
     {
-        var parsed = AuditoriumParser.ParseAuditorium(1, "А-234-а (МП-1)");
-        Assert.Equal("А-234-а", parsed.Title);
+        var parsed = AuditoriumParser.ParseAuditorium(1, "А-243-а (МП-1)");
+        Assert.Equal("А-243-а", parsed.Title);
         Assert.Equal("МП-1", parsed.Campus);
     }
 

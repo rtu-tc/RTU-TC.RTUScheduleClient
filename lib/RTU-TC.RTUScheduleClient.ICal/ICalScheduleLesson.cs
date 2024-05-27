@@ -1,5 +1,6 @@
 ﻿using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
+using RTU_TC.RTUScheduleClient.ICal;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -7,8 +8,6 @@ namespace RTU_TC.RTUScheduleClient;
 
 public partial class ICalScheduleLesson : IScheduleLesson
 {
-    private static readonly Regex _audNameRegex = GetAuditoriumValuesRegex();
-
     public ICalScheduleLesson(Period period, CalendarEvent calendarEvent)
     {
         Start = period.StartTime.AsDateTimeOffset;
@@ -29,12 +28,7 @@ public partial class ICalScheduleLesson : IScheduleLesson
         .Select(p =>
         {
             var audId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
-            var audMatch = _audNameRegex.Match(p.Value.ToString()!);
-            return new ScheduleAuditorium(
-                audId,
-                audMatch.Groups["title"].Value,
-                audMatch.Groups["campus"].Value
-            );
+            return AuditoriumParser.ParseAuditorium(audId, p.Value.ToString()!);
         })
         .ToArray();
 
@@ -60,9 +54,6 @@ public partial class ICalScheduleLesson : IScheduleLesson
     public IReadOnlyCollection<ScheduleAuditorium> Auditoriums { get; }
     public IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
     public IReadOnlyCollection<int> SubGroups { get; }
-
-    [GeneratedRegex(@"^(?<title>.+)\s*(\((?<campus>.+)\))?$")]
-    private static partial Regex GetAuditoriumValuesRegex();
 }
 
 public static partial class SubGroupsFromPpsExtractor
