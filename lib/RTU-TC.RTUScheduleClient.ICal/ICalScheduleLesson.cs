@@ -61,7 +61,7 @@ public partial class ICalScheduleLesson : IScheduleLesson
     public IReadOnlyCollection<ScheduleTeacher> Teachers { get; }
     public IReadOnlyCollection<int> SubGroups { get; }
 
-    [GeneratedRegex(@"^(?<title>.+)\s+\((?<campus>.+)\)$")]
+    [GeneratedRegex(@"^(?<title>.+)\s*(\((?<campus>.+)\))?$")]
     private static partial Regex GetAuditoriumValuesRegex();
 }
 
