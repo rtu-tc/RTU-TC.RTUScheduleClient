@@ -1,0 +1,30 @@
+name: Publish nuget
+
+on:
+  push:
+    tags: [ 'v[0-9]+.[0-9]+.[0-9]+' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions: write-all
+    name: CI Build
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Test
+      run: dotnet test --configuration Release
+
+    - name: Pack core
+      run: dotnet pack -o packs ./lib/RTU-TC.RTUScheduleClient.Core/RTU-TC.RTUScheduleClient.Core.csproj
+    - name: Pack ICal
+      run: dotnet pack -o packs ./lib/RTU-TC.RTUScheduleClient.ICal/RTU-TC.RTUScheduleClient.ICal.csproj
+    - name: Push nuget packages
+      run: dotnet nuget push packs -k ${{secrets.NUGET_API_KEY}}
+
