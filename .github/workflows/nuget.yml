@@ -26,5 +26,5 @@ jobs:
     - name: Pack ICal
       run: dotnet pack -o packs ./lib/RTU-TC.RTUScheduleClient.ICal/RTU-TC.RTUScheduleClient.ICal.csproj
     - name: Push nuget packages
-      run: dotnet nuget push packs -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./packs/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
 
