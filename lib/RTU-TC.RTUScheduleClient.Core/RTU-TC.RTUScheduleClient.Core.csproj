@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>0.0.7</Version>
+    <Version>0.0.8</Version>
     <Authors>RTU-TC</Authors>
     <Company>RTU-TC</Company>
     <Description>Базовые интерфейсы клиента для расписания РТУ МИРЭА</Description>

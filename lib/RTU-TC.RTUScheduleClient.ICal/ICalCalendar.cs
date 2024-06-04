@@ -24,6 +24,10 @@ public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalenda
     public IEnumerable<IScheduleLesson> GetAllLessons()
     {
         var scheduleVersions = GetScheduleVersions();
+        if (!scheduleVersions.Any())
+        {
+            return [];
+        }
         return GetLessons(scheduleVersions.Select(s => s.Start).Min(), scheduleVersions.Select(s => s.End).Max());
     }
 
