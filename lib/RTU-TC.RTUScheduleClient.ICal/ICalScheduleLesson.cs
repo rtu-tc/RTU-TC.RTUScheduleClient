@@ -27,8 +27,12 @@ public partial class ICalScheduleLesson : IScheduleLesson
         Auditoriums = calendarEvent.Properties.AllOf("X-META-AUDITORIUM")
         .Select(p =>
         {
-            var audId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
-            return AuditoriumParser.ParseAuditorium(audId, p.Value.ToString()!);
+            return new ScheduleAuditorium{
+                Id = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture),
+                Title = p.Value.ToString()!,
+                Number = p.Parameters.Get("NUMBER"),
+                Campus = p.Parameters.Get("CAMPUS"),
+            };
         })
         .ToArray();
 
