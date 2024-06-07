@@ -17,9 +17,13 @@ await foreach (var item in scheduleClient.GetAllSchedulesAsync())
 {
     Console.WriteLine(item.TargetTitle);
     var cal = await item.GetCalendarAsync();
-    foreach (var schedule in cal.GetAllLessons())
+    foreach (var lesson in cal.GetAllLessons())
     {
-        Console.WriteLine(schedule.Discipline);
+        Console.WriteLine(lesson.Discipline);
+        foreach (var auditorium in lesson.Auditoriums)
+        {
+            Console.WriteLine($"- {auditorium.Title}|{auditorium.Number}|{auditorium.Campus ?? "NULL"}");
+        }
     }
     break;
 }
