@@ -3,6 +3,7 @@ using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using RTU_TC.RTUScheduleClient.ICal;
 using System.Globalization;
+using System.Linq;
 
 namespace RTU_TC.RTUScheduleClient;
 public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalendar
@@ -81,15 +82,16 @@ public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalenda
     public IEnumerable<IScheduleLesson> GetSchedulePeriodTypeLessons(SchedulePeriodType periodType)
     {
         var scheduleVersions = GetScheduleVersions();
-        var filteredIds = scheduleVersions.Where(sv => sv.PeriodType == periodType).Select(sv => sv.Id);    
+        var requiredScheduleVersions = scheduleVersions.Where(v => v.PeriodType == periodType).ToArray();
 
-        var minStart = scheduleVersions
-            .Where(v => v.PeriodType == periodType)
-            .Min(v => v.Start);
-        var maxEnd = scheduleVersions
-            .Where(v => v.PeriodType == periodType)
-            .Max(v => v.End);
+        if (requiredScheduleVersions.Length == 0)
+        {
+            return [];
+        }
 
-        return GetLessons(minStart, maxEnd).Where(l => filteredIds.Contains(l.ScheduleVersionId));
+        var minStart = requiredScheduleVersions.Min(v => v.Start);
+        var maxEnd = requiredScheduleVersions.Max(v => v.End);
+
+        return GetLessons(minStart, maxEnd).Where(l => requiredScheduleVersions.Any(v => v.Id == l.ScheduleVersionId));
     }
 }

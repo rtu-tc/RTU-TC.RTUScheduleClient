@@ -13,11 +13,11 @@ await foreach (var item in scheduleClient.GetAllAuditoriumSchedulesAsync("А-18"
     break;
 }
 
-await foreach (var item in scheduleClient.GetAllSchedulesAsync())
+await foreach (var item in scheduleClient.GetAllSchedulesAsync("Радус"))
 {
     Console.WriteLine(item.TargetTitle);
     var cal = await item.GetCalendarAsync();
-    foreach (var lesson in cal.GetAllLessons())
+    foreach (var lesson in cal.GetSchedulePeriodTypeLessons(SchedulePeriodType.Session))
     {
         Console.WriteLine(lesson.Discipline);
         foreach (var auditorium in lesson.Auditoriums)
