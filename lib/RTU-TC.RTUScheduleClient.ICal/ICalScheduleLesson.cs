@@ -1,6 +1,5 @@
 ﻿using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
-using RTU_TC.RTUScheduleClient.ICal;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -10,6 +9,7 @@ public partial class ICalScheduleLesson : IScheduleLesson
 {
     public ICalScheduleLesson(Period period, CalendarEvent calendarEvent)
     {
+        Id = calendarEvent.Uid;
         Start = period.StartTime.AsDateTimeOffset;
         End = period.EndTime.AsDateTimeOffset;
         Discipline = calendarEvent.Properties.Get<string>("X-META-DISCIPLINE");
@@ -46,6 +46,8 @@ public partial class ICalScheduleLesson : IScheduleLesson
 
         SubGroups = SubGroupsFromPpsExtractor.ExtractSubGroups(calendarEvent.Properties.Get<string>("SUMMARY"));
     }
+
+    public string Id { get; }
 
     public DateTimeOffset Start { get; }
     public DateTimeOffset End { get; }

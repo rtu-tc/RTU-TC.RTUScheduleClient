@@ -2,12 +2,9 @@
 using System.Net.Http.Json;
 using System.Net;
 using System.Text.Json.Serialization;
-using RTU_TC.RTUScheduleClient.ICal;
 using System.Runtime.CompilerServices;
-using System.Net.Http;
-using System.Text.RegularExpressions;
 
-namespace RTU_TC.RTUScheduleClient;
+namespace RTU_TC.RTUScheduleClient.ICal;
 
 public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
 {

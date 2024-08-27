@@ -1,4 +1,5 @@
 ﻿using RTU_TC.RTUScheduleClient;
+using RTU_TC.RTUScheduleClient.ICal;
 
 using var client = new HttpClient
 {
@@ -17,9 +18,9 @@ await foreach (var item in scheduleClient.GetAllSchedulesAsync("Радус"))
 {
     Console.WriteLine(item.TargetTitle);
     var cal = await item.GetCalendarAsync();
-    foreach (var lesson in cal.GetSchedulePeriodTypeLessons(SchedulePeriodType.Session))
+    foreach (var lesson in cal.GetSchedulePeriodTypeLessons(SchedulePeriodType.Semester))
     {
-        Console.WriteLine(lesson.Discipline);
+        Console.WriteLine($"{lesson.Id} {lesson.Start} {lesson.Discipline}");
         foreach (var auditorium in lesson.Auditoriums)
         {
             Console.WriteLine($"- {auditorium.Title}|{auditorium.Number}|{auditorium.Campus ?? "NULL"}");

@@ -1,11 +1,10 @@
 ﻿using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
-using RTU_TC.RTUScheduleClient.ICal;
 using System.Globalization;
-using System.Linq;
 
-namespace RTU_TC.RTUScheduleClient;
+namespace RTU_TC.RTUScheduleClient.ICal;
+
 public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalendar
 {
     private readonly TimeSpan _correctOffset = Calendar.TimeZones.Single().TimeZoneInfos.Single().OffsetFrom.Offset;
@@ -18,7 +17,7 @@ public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalenda
         return Calendar
             .GetOccurrences(fromTime, toTime)
             .Select(occ => (occ.Period, Source: (occ.Source as CalendarEvent)!))
-            .Where(t => t.Source.Transparency == TransparencyType.Opaque) // занятие - занятия. Не занятые - недели и т.д.
+            .Where(t => t.Source.Transparency == TransparencyType.Opaque) // занятые = занятия. Не занятые - недели и т.д.
             .Select(occ => new ICalScheduleLesson(occ.Period, occ.Source) as IScheduleLesson);
     }
 

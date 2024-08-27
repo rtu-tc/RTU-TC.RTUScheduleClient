@@ -6,6 +6,10 @@
 public interface IScheduleLesson
 {
     /// <summary>
+    /// Идентификатор занятия. Важно - он может быть один для нескольких "повторяющихся" занятий, и уникален только для занятий, проводимых в одно и то же время.
+    /// </summary>
+    string Id { get; }
+    /// <summary>
     /// Время начала занятия
     /// </summary>
     DateTimeOffset Start { get; }
