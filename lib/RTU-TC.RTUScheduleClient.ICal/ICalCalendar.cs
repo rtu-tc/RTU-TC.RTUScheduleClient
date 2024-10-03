@@ -3,12 +3,14 @@ using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
 using System.Globalization;
 
+
 namespace RTU_TC.RTUScheduleClient.ICal;
 
-public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalendar
+public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalendar, IICalScheduleCalendar
 {
     private readonly TimeSpan _correctOffset = Calendar.TimeZones.Single().TimeZoneInfos.Single().OffsetFrom.Offset;
     private readonly string _tzName = Calendar.TimeZones.Single().Name;
+    public Ical.Net.Calendar ICalCalendarRaw => Calendar;
 
     public IEnumerable<IScheduleLesson> GetLessons(DateTimeOffset from, DateTimeOffset to)
     {
