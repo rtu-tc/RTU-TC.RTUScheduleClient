@@ -33,7 +33,7 @@ await foreach (var item in scheduleClient.GetAllSchedulesAsync("Радус"))
 Ical.Net.Calendar calendar = null;
 await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync("ИКМО-01-2"))
 {
-    var cal = await item.GetCalendarRawAsync();
+    var cal = await (item as ICalSchedule).GetCalendarRawAsync();
     if (calendar == null)
     {
         calendar = cal;

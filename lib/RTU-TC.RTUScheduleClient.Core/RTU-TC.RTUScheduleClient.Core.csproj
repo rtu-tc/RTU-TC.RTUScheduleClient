@@ -28,7 +28,4 @@
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Ical.Net" Version="4.2.0" />
-  </ItemGroup>
 </Project>

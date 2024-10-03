@@ -57,7 +57,7 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
         public string? NextPageToken { get; set; }
     }
 
-    private class Schedule(HttpClient httpClient, ScheduleDto dto) : ISchedule
+    private class Schedule(HttpClient httpClient, ScheduleDto dto) : ISchedule, ICalSchedule
     {
         private readonly HttpClient _httpClient = httpClient;
         private readonly ScheduleDto _dto = dto;
