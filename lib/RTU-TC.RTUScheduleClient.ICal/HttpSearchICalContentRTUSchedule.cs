@@ -73,6 +73,14 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
             var calendar = Ical.Net.Calendar.Load(await _httpClient.GetStreamAsync(uri, cancellationToken));
             return new ICalCalendar(calendar);
         }
+
+        public async Task<Ical.Net.Calendar> GetCalendarRawAsync(CancellationToken cancellationToken = default)
+        {
+            var delimiter = _dto.ICalLink.Contains('?') ? '&' : '?';
+            var uri = $"{_dto.ICalLink}{delimiter}includeMeta=true";
+            var calendar = Ical.Net.Calendar.Load(await _httpClient.GetStreamAsync(uri, cancellationToken));
+            return calendar;
+        }
     }
     private class ScheduleDto
     {

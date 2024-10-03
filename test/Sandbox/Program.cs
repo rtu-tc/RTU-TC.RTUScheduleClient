@@ -28,3 +28,20 @@ await foreach (var item in scheduleClient.GetAllSchedulesAsync("Радус"))
     }
     break;
 }
+
+// Тестирование слияния расписаний
+Ical.Net.Calendar calendar = null;
+await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync("ИКМО-01-2"))
+{
+    var cal = await item.GetCalendarRawAsync();
+    if (calendar == null)
+    {
+        calendar = cal;
+    }
+    else
+    {
+        calendar.Events.AddRange(cal.Events);
+    }
+}
+
+Console.WriteLine(calendar.Events.Count);

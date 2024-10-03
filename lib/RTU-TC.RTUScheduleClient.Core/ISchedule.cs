@@ -18,4 +18,6 @@ public interface ISchedule
     /// </summary>
     string TargetTitle { get; }
     Task<IScheduleCalendar> GetCalendarAsync(CancellationToken cancellationToken = default);
+    
+    Task<Ical.Net.Calendar> GetCalendarRawAsync(CancellationToken cancellationToken = default);
 }
