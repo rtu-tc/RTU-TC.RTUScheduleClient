@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using Ical.Net;
 
 namespace RTU_TC.RTUScheduleClient.ICal.Tests.ICalCalendarTests;
@@ -7,7 +7,7 @@ public class CorrectGetLessonsTests
     [Fact]
     public void ZeroPeriodReturnsEmptyCollection()
     {
-        var calendar = Calendar.Load(File.OpenText("./ICalCalendarTests/exampleschedule.ics"));
+        var calendar = Calendar.Load(File.OpenText("./ICalCalendarTests/exampleschedule.ics"))!;
         var icalScheduleCal = new ICalCalendar(calendar);
 
         var time = DateTimeOffset.Parse("2024-03-07T00:14:23.0479662+03:00");
@@ -19,7 +19,7 @@ public class CorrectGetLessonsTests
     [Fact]
     public void ZeroPeriodInLessonReturnsCorrectCollection()
     {
-        var calendar = Calendar.Load(File.OpenText("./ICalCalendarTests/exampleschedule.ics"));
+        var calendar = Calendar.Load(File.OpenText("./ICalCalendarTests/exampleschedule.ics"))!;
         var icalScheduleCal = new ICalCalendar(calendar);
 
         var time = DateTimeOffset.Parse("2024-03-15T10:50:23.0479662+03:00");
@@ -31,7 +31,7 @@ public class CorrectGetLessonsTests
     [Fact]
     public void LessonTimePeriodReturnsOneCorrectLesson()
     {
-        var calendar = Calendar.Load(File.OpenText("./ICalCalendarTests/exampleschedule.ics"));
+        var calendar = Calendar.Load(File.OpenText("./ICalCalendarTests/exampleschedule.ics"))!;
         var icalScheduleCal = new ICalCalendar(calendar);
 
         var timeStart = DateTimeOffset.Parse("2024-03-15T14:20:00+03:00");

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 
 namespace RTU_TC.RTUScheduleClient.ICal.Tests.HttpSearchICalContentRTUScheduleTests;
 public class ConfigurationTests

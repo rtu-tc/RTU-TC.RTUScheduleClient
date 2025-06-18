@@ -70,7 +70,8 @@ public class HttpSearchICalContentRTUSchedule : IRTUScheduleClient
         {
             var delimiter = _dto.ICalLink.Contains('?') ? '&' : '?';
             var uri = $"{_dto.ICalLink}{delimiter}includeMeta=true";
-            var calendar = Ical.Net.Calendar.Load(await _httpClient.GetStreamAsync(uri, cancellationToken));
+            var calendar = Ical.Net.Calendar.Load(await _httpClient.GetStreamAsync(uri, cancellationToken))
+                ?? throw new InvalidDataException($"Can't load calendar from {uri}");
             return new ICalCalendar(calendar);
         }
     }

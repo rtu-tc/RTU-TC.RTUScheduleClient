@@ -7,42 +7,51 @@ namespace RTU_TC.RTUScheduleClient;
 
 public partial class ICalScheduleLesson : IScheduleLesson
 {
-    public ICalScheduleLesson(Period period, CalendarEvent calendarEvent)
+    public ICalScheduleLesson(Period period, CalendarEvent calendarEvent, string? timeZoneId)
     {
-        Id = calendarEvent.Uid;
-        Start = period.StartTime.AsDateTimeOffset;
-        End = period.EndTime.AsDateTimeOffset;
-        Discipline = calendarEvent.Properties.Get<string>("X-META-DISCIPLINE");
-        LessonType = calendarEvent.Properties.Get<string>("X-META-LESSON_TYPE");
-        ScheduleVersionId = int.Parse(calendarEvent.Properties.Get<string>("X-SCHEDULE_VERSION-ID"));
+        Id = calendarEvent.Uid
+            ?? throw new InvalidDataException($"No UID in event {period}"); ;
 
-        Groups = calendarEvent.Properties.AllOf("X-META-GROUP")
+        // FIXME: крайне плохое поведение, нужно или добиться от библиотеки выдачи DateTimeOffset, либо найти иное решение
+        Start = DateTimeOffset.Parse(period.StartTime.ToString("O").Replace(timeZoneId ?? "", "").Trim());
+        End = DateTimeOffset.Parse(period.EffectiveEndTime?.ToString("O").Replace(timeZoneId ?? "", "").Trim() ?? throw new InvalidDataException($"No end in period {period} of event {calendarEvent.Uid}"));
+
+        Discipline = calendarEvent.Properties.Get<string>("X-META-DISCIPLINE")
+            ?? throw new InvalidDataException($"No discipline in event {calendarEvent.Uid}");
+        LessonType = calendarEvent.Properties.Get<string>("X-META-LESSON_TYPE")
+            ?? throw new InvalidDataException($"No lesson type in event {calendarEvent.Uid}"); ;
+        ScheduleVersionId = int.Parse(calendarEvent.Properties.Get<string>("X-SCHEDULE_VERSION-ID")
+            ?? throw new InvalidDataException($"No schedule version id in event {calendarEvent.Uid}"));
+
+        Groups = [.. calendarEvent.Properties.AllOf("X-META-GROUP")
         .Select(p =>
         {
-            var groupId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
-            return new ScheduleGroup(groupId, p.Value.ToString()!);
-        })
-        .ToArray();
+            var groupId = long.Parse(p.Parameters.Get("ID")
+                ?? throw new InvalidDataException($"No group id in property {p} of event {calendarEvent.Uid}")
+                , CultureInfo.InvariantCulture);
+            return new ScheduleGroup(groupId, p.Value?.ToString() ?? throw new InvalidDataException($"No group value in property {p} of event {calendarEvent.Uid}"));
+        })];
 
-        Auditoriums = calendarEvent.Properties.AllOf("X-META-AUDITORIUM")
+        Auditoriums = [.. calendarEvent.Properties.AllOf("X-META-AUDITORIUM")
         .Select(p =>
         {
             return new ScheduleAuditorium{
-                Id = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture),
-                Title = p.Value.ToString()!,
-                Number = p.Parameters.Get("NUMBER"),
+                Id = long.Parse(p.Parameters.Get("ID")
+                    ?? throw new InvalidDataException($"No auditorium id in property {p} of event {calendarEvent.Uid}")
+                , CultureInfo.InvariantCulture),
+                Title = p.Value?.ToString() ?? throw new InvalidDataException($"No auditorium value in property {p} of event {calendarEvent.Uid}"),
+                Number = p.Parameters.Get("NUMBER") ?? throw new InvalidDataException($"No auditorium number in property {p} of event {calendarEvent.Uid}"),
                 Campus = p.Parameters.Get("CAMPUS"),
             };
-        })
-        .ToArray();
+        })];
 
-        Teachers = calendarEvent.Properties.AllOf("X-META-TEACHER")
+        Teachers = [.. calendarEvent.Properties.AllOf("X-META-TEACHER")
         .Select(p =>
         {
-            var teacherId = long.Parse(p.Parameters.Get("ID"), CultureInfo.InvariantCulture);
-            return new ScheduleTeacher(teacherId, p.Value.ToString()!);
-        })
-        .ToArray();
+            var teacherId = long.Parse(p.Parameters.Get("ID")
+                ?? throw new InvalidDataException($"No teacher id in property {p} of event {calendarEvent.Uid}"), CultureInfo.InvariantCulture);
+            return new ScheduleTeacher(teacherId, p.Value?.ToString() ?? throw new InvalidDataException($"No teacher value in property {p} of event {calendarEvent.Uid}"));
+        })];
 
         SubGroups = SubGroupsFromPpsExtractor.ExtractSubGroups(calendarEvent.Properties.Get<string>("SUMMARY"));
     }

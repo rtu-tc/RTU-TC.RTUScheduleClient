@@ -8,19 +8,21 @@ namespace RTU_TC.RTUScheduleClient.ICal;
 
 public partial class ICalCalendar(Ical.Net.Calendar Calendar) : IScheduleCalendar, IICalScheduleCalendar
 {
-    private readonly TimeSpan _correctOffset = Calendar.TimeZones.Single().TimeZoneInfos.Single().OffsetFrom.Offset;
-    private readonly string _tzName = Calendar.TimeZones.Single().Name;
+    private readonly string _tzId = Calendar.TimeZones.Single().TzId
+        ?? throw new InvalidDataException("Not found timezone id in calendar");
     public Ical.Net.Calendar ICalCalendarRaw => Calendar;
 
     public IEnumerable<IScheduleLesson> GetLessons(DateTimeOffset from, DateTimeOffset to)
     {
-        var fromTime = new CalDateTime(from.ToOffset(_correctOffset).DateTime, _tzName);
-        var toTime = new CalDateTime(to.ToOffset(_correctOffset).DateTime, _tzName);
+        var fromTime = new CalDateTime(from.UtcDateTime);
+        var toTime = new CalDateTime(to.UtcDateTime);
         return Calendar
-            .GetOccurrences(fromTime, toTime)
+            // FIXME: GetOccurrences выдает значения вне интервала, некорректно обрабатывая границы
+            .GetOccurrences<CalendarEvent>(fromTime)
+            .TakeWhileBefore(toTime)
             .Select(occ => (occ.Period, Source: (occ.Source as CalendarEvent)!))
             .Where(t => t.Source.Transparency == TransparencyType.Opaque) // занятые = занятия. Не занятые - недели и т.д.
-            .Select(occ => new ICalScheduleLesson(occ.Period, occ.Source) as IScheduleLesson);
+            .Select(occ => new ICalScheduleLesson(occ.Period, occ.Source, _tzId) as IScheduleLesson);
     }
 
     public IEnumerable<IScheduleLesson> GetAllLessons()

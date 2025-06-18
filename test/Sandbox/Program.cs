@@ -30,11 +30,16 @@ await foreach (var item in scheduleClient.GetAllSchedulesAsync("Радус"))
 }
 
 // Тестирование слияния расписаний
-Ical.Net.Calendar calendar = null;
+Ical.Net.Calendar? calendar = null;
 await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync("ИКМО-01-2"))
 {
     var cal = await item.GetCalendarAsync();
-    var calRaw = (cal as IICalScheduleCalendar).ICalCalendarRaw;
+    if (cal is not IICalScheduleCalendar icalCalendar)
+    {
+        Console.WriteLine($"incorrect calendar {item.TargetTitle}");
+        continue;
+    }
+    var calRaw = icalCalendar.ICalCalendarRaw;
     if (calendar == null)
     {
         calendar = calRaw;
@@ -44,5 +49,11 @@ await foreach (var item in scheduleClient.GetAllGroupSchedulesAsync("ИКМО-01
         calendar.Events.AddRange(calRaw.Events);
     }
 }
-
-Console.WriteLine(calendar.Events.Count);
+if (calendar is null)
+{
+    Console.WriteLine("not found calendars");
+}
+else
+{
+    Console.WriteLine(calendar.Events.Count);
+}
