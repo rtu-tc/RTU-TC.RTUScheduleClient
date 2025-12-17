@@ -45,4 +45,8 @@ public interface IScheduleLesson
     /// Подгруппа(ы) занятия 
     /// </summary>
     IReadOnlyCollection<int> SubGroups { get; }
+    /// <summary>
+    /// Дополнительный тип занятия
+    /// </summary>
+    string AdditionalLessonType { get; }
 }
